@@ -1,35 +1,44 @@
 const routes = [
   {
     path: "/",
+    component: () => import("layouts/InitialView.vue")
+  },
+  {
+    path: "/senha",
     component: () => import("layouts/General.vue"),
     props: { tipo: "Culto Oficial" }
   },
   {
-    path: "/cultos",
+    path: "/admin",
     component: () => import("layouts/AdminLayout.vue"),
     props: { tipo: "Culto Oficial" }
   },
   {
-    path: "/reunioes",
+    path: "/admin/cultos",
+    component: () => import("layouts/AdminLayout.vue"),
+    props: { tipo: "Culto Oficial" }
+  },
+  {
+    path: "/admin/reunioes",
     component: () => import("layouts/AdminLayout.vue"),
     props: { tipo: "Reunião de Jovens e Menores" }
   },
   {
-    path: "/ensaios",
+    path: "/admin/ensaios",
     component: () => import("layouts/AdminLayout.vue"),
     props: { tipo: "Ensaio" }
   },
   {
-    path: "/outros",
+    path: "/admin/outros",
     component: () => import("layouts/AdminLayout.vue"),
     props: { tipo: "Outros" }
   },
   {
-    path: "/servico/novo",
+    path: "/admin/servico/novo",
     component: () => import("layouts/ServiceForm.vue")
   },
   {
-    path: "/servico/editar/:id",
+    path: "/admin/servico/editar/:id",
     name: "editar_servico",
     component: () => import("layouts/ServiceForm.vue"),
     props: true

@@ -1,11 +1,11 @@
 <template>
   <div class="row justify-center">
     <template v-if="loading">
-      <q-inner-loading showing color="primary" />
+      <q-inner-loading showing color="blue-grey-6" />
     </template>
-    <div v-else class="q-pa-md q-mt-xl col">
+    <div v-else class="q-pa-md q-mt-sm col">
       <q-card class="my-card">
-        <q-card-section class="bg-primary text-white">
+        <q-card-section class="bg-blue-grey-6 text-white">
           <div class="text-h6">
             {{ id ? "Editar Serviço" : "Novo Serviço" }}
           </div>
@@ -20,6 +20,7 @@
               v-model="servico.tipo_servico"
               :options="options"
               label="Tipo de Serviço"
+              color="blue-grey-10"
               lazy-rules
               :rules="[
                 val =>
@@ -31,6 +32,7 @@
             <q-input
               filled
               v-model="servico.data"
+              color="blue-grey-10"
               mask="##/##/####"
               label="Data"
               lazy-rules
@@ -50,12 +52,13 @@
                       v-model="servico.data"
                       :options="optionsFn"
                       mask="DD/MM/YYYY"
+                      color="blue-grey-8"
                     >
                       <div class="row items-center justify-end">
                         <q-btn
                           v-close-popup
                           label="Fechar"
-                          color="primary"
+                          color="blue-grey-8"
                           flat
                         />
                       </div>
@@ -69,6 +72,7 @@
               filled
               v-model="servico.horario"
               mask="time"
+              color="blue-grey-10"
               label="Horário"
               lazy-rules
               :rules="[
@@ -83,12 +87,12 @@
                     transition-show="scale"
                     transition-hide="scale"
                   >
-                    <q-time v-model="servico.horario">
+                    <q-time v-model="servico.horario" color="blue-grey-8">
                       <div class="row items-center justify-end">
                         <q-btn
                           v-close-popup
                           label="Fechar"
-                          color="primary"
+                          color="blue-grey-8"
                           flat
                         />
                       </div>
@@ -102,6 +106,7 @@
               v-model.number="servico.irmaos"
               type="number"
               label="Lugares disponíveis para Irmãos"
+              color="blue-grey-10"
               lazy-rules
               :rules="[
                 val =>
@@ -117,6 +122,7 @@
               </template>
             </q-input>
             <q-input
+              color="blue-grey-10"
               v-model.number="servico.irmas"
               type="number"
               label="Lugares disponíveis para Irmãs"
@@ -135,18 +141,63 @@
               </template>
             </q-input>
 
-            <div class="q-mt-xl">
+            <q-input
+              v-model.number="servico.musicos"
+              type="number"
+              color="blue-grey-10"
+              label="Lugares reservados para Músicos"
+              lazy-rules
+              :rules="[
+                val =>
+                  (val !== null && val !== '') ||
+                  'Por favor, preencha a quantidade de lugares reservados',
+                val =>
+                  val > 0 ||
+                  'A quantidade de lugares reservados deve ser maior que 0'
+              ]"
+            >
+              <template v-slot:prepend>
+                <q-icon name="music_note" />
+              </template>
+            </q-input>
+
+            <q-input
+              v-model.number="servico.outros"
+              type="number"
+              color="blue-grey-10"
+              label="Lugares reservados para Outros Colaboradores"
+              lazy-rules
+              :rules="[
+                val =>
+                  (val !== null && val !== '') ||
+                  'Por favor, preencha a quantidade de lugares reservados',
+                val =>
+                  val > 0 ||
+                  'A quantidade de lugares reservados deve ser maior que 0'
+              ]"
+            >
+              <template v-slot:prepend>
+                <q-icon name="groups" />
+              </template>
+            </q-input>
+
+            <div class="q-mt-lg">
               <q-btn
                 v-if="id"
                 label="Salvar"
                 @click="saveEdition"
-                color="primary"
+                color="blue-grey-8"
               />
-              <q-btn v-else label="Criar" @click="createNew" color="primary" />
+              <q-btn
+                v-else
+                label="Criar"
+                @click="createNew"
+                color="blue-grey-8"
+              />
               <q-btn
                 label="Cancelar"
                 @click="$router.go(-1)"
-                color="primary"
+                color="blue-grey-8"
                 flat
                 class="q-ml-sm"
               />
@@ -178,6 +229,8 @@ export default {
         horario: null,
         irmaos: null,
         irmas: null,
+        musicos: null,
+        outros: null,
         senhas_irmaos: [],
         senhas_irmas: []
       }
@@ -280,6 +333,6 @@ export default {
 <style lang="sass" scoped>
 .my-card
   width: 100%
-  max-width: 450px
+  max-width: 500px
   margin: auto
 </style>

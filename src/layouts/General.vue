@@ -3,7 +3,7 @@
     <template v-if="loading">
       <q-inner-loading showing color="primary" />
     </template>
-    <div v-else class="q-pa-md q-mt-xl col">
+    <div v-else-if="!senhas" class="q-pa-md q-mt-lg col">
       <q-card class="my-card">
         <q-card-section class="bg-primary text-white">
           <div class="text-h6">
@@ -48,11 +48,7 @@
                     transition-show="scale"
                     transition-hide="scale"
                   >
-                    <q-date
-                      v-model="servico.data"
-                      :options="optionsFn"
-                      mask="DD/MM/YYYY"
-                    >
+                    <q-date v-model="servico.data" mask="DD/MM/YYYY">
                       <div class="row items-center justify-end">
                         <q-btn
                           v-close-popup
@@ -136,7 +132,7 @@
             <div class="q-mt-xl">
               <q-btn
                 label="Solicitar"
-                @click="createNewOrder"
+                @click="createNewNumber"
                 color="primary"
               />
               <q-btn
@@ -151,14 +147,17 @@
         </q-card-section>
       </q-card>
     </div>
+    <Number v-else :senhas="senhas" />
   </div>
 </template>
 <script>
 import { getAvailableByType } from "../data/services";
-
+import { createNumberToService } from "../data/lane";
+import Number from "../components/Number";
 export default {
   name: "General",
   props: ["tipo"],
+  components: { Number },
   data() {
     return {
       loading: false,
@@ -176,21 +175,37 @@ export default {
         horario: null,
         irmaos: null,
         irmas: null
-      }
+      },
+      senhas: null
     };
   },
   methods: {
     async getAvailableService(tipo) {
       try {
         const data = await getAvailableByType(tipo);
-        if (Object.keys(data).length === 0 && data.constructor === Object) {
-          this.servico = { ...data };
-        }
+        this.servico = { ...data };
       } catch (error) {
         console.error(error);
       }
     },
-    async createNewOrder() {}
+    async createNewNumber() {
+      this.loading = true;
+      try {
+        const body = {
+          culto_id: this.servico._id,
+          irmaos: this.quantidade_irmaos,
+          irmas: this.quantidade_irmas,
+          data: this.servico.data,
+          horario: this.servico.horario
+        };
+
+        const numbers = await createNumberToService(body);
+        this.senhas = { ...numbers };
+        this.loading = false;
+      } catch (error) {
+        console.error(error);
+      }
+    }
   },
   mounted() {
     this.getAvailableService(this.tipo);

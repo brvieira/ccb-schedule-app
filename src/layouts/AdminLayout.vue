@@ -70,7 +70,7 @@ export default {
         },
         {
           name: "irmaos",
-          label: "Lugares para Irmãos",
+          label: "Irmãos",
           field: "irmaos",
           align: "center",
           sortable: false,
@@ -78,8 +78,24 @@ export default {
         },
         {
           name: "irmas",
-          label: "Lugares para Irmãs",
+          label: "Irmãs",
           field: "irmas",
+          align: "center",
+          sortable: false,
+          headerClasses: "bg-primary text-white"
+        },
+        {
+          name: "musicos",
+          label: "Músicos",
+          field: "musicos",
+          align: "center",
+          sortable: false,
+          headerClasses: "bg-primary text-white"
+        },
+        {
+          name: "outros",
+          label: "Colaboradores",
+          field: "outros",
           align: "center",
           sortable: false,
           headerClasses: "bg-primary text-white"
