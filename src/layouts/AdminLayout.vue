@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <div class="row justify-center">
-      <div class="q-pa-md q-mt-xl col-12">
+      <div class="q-pa-md q-px-sm-xl q-px-xs q-mt-lg col-12">
         <q-table
+          :dense="$q.screen.lt.md"
           :data="rows"
           :columns="columns"
           row-key="dia"
@@ -17,10 +18,10 @@
       </div>
     </div>
     <div class="row">
-      <div class="q-pa-sm col">
+      <div class="q-pa-md col q-px-sm-xl q-px-xs">
         <q-btn
-          class="q-ml-sm"
-          color="primary"
+          :dense="$q.screen.lt.md"
+          color="blue-grey-10"
           :disable="loading"
           label="Novo"
           @click="addRow"
@@ -50,7 +51,7 @@ export default {
           align: "left",
           sortable: true,
           classes: "bg-grey-4 ellipsis",
-          headerClasses: "bg-primary text-white"
+          headerClasses: "bg-blue-grey-8 text-white"
         },
         {
           name: "horario",
@@ -58,7 +59,7 @@ export default {
           field: "horario",
           align: "center",
           sortable: false,
-          headerClasses: "bg-primary text-white"
+          headerClasses: "bg-blue-grey-8 text-white"
         },
         {
           name: "tipo_servico",
@@ -66,7 +67,7 @@ export default {
           field: "tipo_servico",
           align: "center",
           sortable: false,
-          headerClasses: "bg-primary text-white"
+          headerClasses: "bg-blue-grey-8 text-white"
         },
         {
           name: "irmaos",
@@ -74,7 +75,8 @@ export default {
           field: "irmaos",
           align: "center",
           sortable: false,
-          headerClasses: "bg-primary text-white"
+          classes: "mobile-hide",
+          headerClasses: "bg-blue-grey-8 text-white mobile-hide"
         },
         {
           name: "irmas",
@@ -82,7 +84,8 @@ export default {
           field: "irmas",
           align: "center",
           sortable: false,
-          headerClasses: "bg-primary text-white"
+          classes: "mobile-hide",
+          headerClasses: "bg-blue-grey-8 text-white mobile-hide"
         },
         {
           name: "musicos",
@@ -90,7 +93,8 @@ export default {
           field: "musicos",
           align: "center",
           sortable: false,
-          headerClasses: "bg-primary text-white"
+          classes: "mobile-hide",
+          headerClasses: "bg-blue-grey-8 text-white mobile-hide"
         },
         {
           name: "outros",
@@ -98,7 +102,8 @@ export default {
           field: "outros",
           align: "center",
           sortable: false,
-          headerClasses: "bg-primary text-white"
+          classes: "mobile-hide",
+          headerClasses: "bg-blue-grey-8 text-white mobile-hide"
         }
       ],
       rows: []
@@ -114,7 +119,9 @@ export default {
       });
     },
     addRow() {
-      this.$router.push("servico/novo");
+      this.$router.push({
+        name: "novo_servico"
+      });
     },
     async getData(tipo) {
       try {

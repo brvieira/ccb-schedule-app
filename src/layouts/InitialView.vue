@@ -1,27 +1,32 @@
 <template>
   <div class="row justify-center">
-    <template v-if="loading">
-      <q-inner-loading showing color="primary" />
-    </template>
-    <div v-else class="q-pa-md q-mt-xl col">
-      <q-card class="my-card">
-        <q-card-section class="bg-primary text-white">
-          <div class="text-h5">Distribuição de Senhas</div>
-          <div class="text-subtitle2">Cultos Oficiais</div>
+    <div class="q-pa-md q-mt-lg col">
+      <q-card class="my-card q-pa-lg">
+        <q-card-section class="text-blue-grey-10 text-center">
+          <div class="text-h4 text-weight-bold">Distribuição de Senhas</div>
+          <div class="text-h6">Cultos Oficiais</div>
         </q-card-section>
 
-        <q-card-actions align="around" class="q-py-xl q-px-sm-xl q-px-xs-sm">
+        <q-card-actions align="center" class="q-pa-lg" vertical>
           <q-btn
             label="Retire sua Senha"
-            rounded
-            @click="$router.push('/senha')"
-            color="primary"
+            @click="$router.push({ name: 'senha' })"
+            color="blue-grey-8"
+            class="full-width"
+          />
+          <q-btn
+            label="Edite sua Senha"
+            @click="$router.push({ name: 'editar_senha' })"
+            color="blue-grey-8"
+            class="full-width"
+            style="margin-top: 24px !important"
           />
           <q-btn
             label="Devolva sua Senha"
-            rounded
-            @click="$router.go(-1)"
-            color="primary"
+            @click="$router.push({ name: 'devolver_senha' })"
+            color="blue-grey-8"
+            class="full-width"
+            style="margin-top: 24px !important"
           />
         </q-card-actions>
       </q-card>
@@ -29,45 +34,8 @@
   </div>
 </template>
 <script>
-import { getAvailableByType } from "../data/services";
-
 export default {
-  name: "InitialView",
-  props: ["tipo"],
-  data() {
-    return {
-      loading: false,
-      quantidade_irmaos: null,
-      quantidade_irmas: null,
-      options: [
-        "Culto Oficial",
-        "Reunião de Jovens e Menores",
-        "Ensaio",
-        "Outros"
-      ],
-      servico: {
-        tipo_servico: null,
-        data: null,
-        horario: null,
-        irmaos: null,
-        irmas: null
-      }
-    };
-  },
-  methods: {
-    async getAvailableService(tipo) {
-      try {
-        const data = await getAvailableByType(tipo);
-        this.servico = { ...data };
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async createNewOrder() {}
-  },
-  mounted() {
-    this.getAvailableService(this.tipo);
-  }
+  name: "InitialView"
 };
 </script>
 <style lang="sass" scoped>

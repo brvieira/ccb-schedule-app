@@ -1,11 +1,21 @@
 <template>
   <div class="row justify-center">
     <template v-if="loading">
-      <q-inner-loading showing color="primary" />
+      <q-inner-loading showing color="blue-grey-6" />
     </template>
+    <div v-else-if="mensagem" class="q-pa-md q-mt-lg">
+      <q-card class="my-card q-pa-lg">
+        <q-card-section class="text-blue-grey-10 text-center q-gutter-md">
+          <div class="text-h5 text-weight-bold">
+            {{ mensagem }}
+          </div>
+          <div class="text-h6">Tente novamente mais tarde</div>
+        </q-card-section>
+      </q-card>
+    </div>
     <div v-else-if="!senhas" class="q-pa-md q-mt-lg col">
       <q-card class="my-card">
-        <q-card-section class="bg-primary text-white">
+        <q-card-section class="bg-blue-grey-6 text-white">
           <div class="text-h6">
             Retirar Senha
           </div>
@@ -16,10 +26,12 @@
         <q-card-section>
           <q-form class="q-gutter-md">
             <q-select
+              :dense="$q.screen.lt.md"
               filled
               disable
               v-model="servico.tipo_servico"
               :options="options"
+              color="blue-grey-10"
               label="Tipo de Serviço"
               lazy-rules
               :rules="[
@@ -30,11 +42,13 @@
             />
 
             <q-input
+              :dense="$q.screen.lt.md"
               filled
               disable
               v-model="servico.data"
               mask="##/##/####"
               label="Data"
+              color="blue-grey-10"
               lazy-rules
               :rules="[
                 val =>
@@ -53,7 +67,7 @@
                         <q-btn
                           v-close-popup
                           label="Fechar"
-                          color="primary"
+                          color="blue-grey-10"
                           flat
                         />
                       </div>
@@ -64,9 +78,11 @@
             </q-input>
 
             <q-input
+              :dense="$q.screen.lt.md"
               filled
               disable
               v-model="servico.horario"
+              color="blue-grey-10"
               mask="time"
               label="Horário"
               lazy-rules
@@ -87,7 +103,7 @@
                         <q-btn
                           v-close-popup
                           label="Fechar"
-                          color="primary"
+                          color="blue-grey-10"
                           flat
                         />
                       </div>
@@ -98,9 +114,11 @@
             </q-input>
 
             <q-select
+              :dense="$q.screen.lt.md"
               v-model="quantidade_irmaos"
-              :options="[0, 1, 2, 3, 4, 5]"
+              :options="getOptions(availBrothers)"
               label="Quantidade de Irmãos"
+              color="blue-grey-10"
               lazy-rules
               :rules="[
                 val =>
@@ -111,12 +129,18 @@
               <template v-slot:append>
                 <q-icon name="people_alt" />
               </template>
+              <template v-slot:hint>
+                Senhas disponíveis:
+                {{ availBrothers - quantidade_irmaos }}
+              </template>
             </q-select>
 
             <q-select
+              :dense="$q.screen.lt.md"
               v-model="quantidade_irmas"
-              :options="[0, 1, 2, 3, 4, 5]"
+              :options="getOptions(availSisters)"
               label="Quantidade de Irmãs"
+              color="blue-grey-10"
               lazy-rules
               :rules="[
                 val =>
@@ -127,18 +151,24 @@
               <template v-slot:append>
                 <q-icon name="people_alt" />
               </template>
+              <template v-slot:hint>
+                Senhas disponíveis:
+                {{ availSisters - quantidade_irmas }}
+              </template>
             </q-select>
 
-            <div class="q-mt-xl">
+            <div class="q-mt-lg">
               <q-btn
+                :dense="$q.screen.lt.md"
                 label="Solicitar"
                 @click="createNewNumber"
-                color="primary"
+                color="blue-grey-10"
               />
               <q-btn
+                :dense="$q.screen.lt.md"
                 label="Cancelar"
                 @click="$router.go(-1)"
-                color="primary"
+                color="blue-grey-10"
                 flat
                 class="q-ml-sm"
               />
@@ -160,7 +190,8 @@ export default {
   components: { Number },
   data() {
     return {
-      loading: false,
+      mensagem: null,
+      loading: true,
       quantidade_irmaos: null,
       quantidade_irmas: null,
       options: [
@@ -169,23 +200,44 @@ export default {
         "Ensaio",
         "Outros"
       ],
-      servico: {
-        tipo_servico: null,
-        data: null,
-        horario: null,
-        irmaos: null,
-        irmas: null
-      },
+      servico: null,
       senhas: null
     };
   },
+  computed: {
+    availSisters() {
+      return this.servico.irmas - this.servico.senhas_irmas;
+    },
+    availBrothers() {
+      return this.servico.irmaos - this.servico.senhas_irmaos;
+    }
+  },
   methods: {
+    getOptions(max) {
+      let item = 0,
+        options = [];
+
+      for (item; item <= max && item <= 5; item++) {
+        options.push(item);
+      }
+
+      return options;
+    },
     async getAvailableService(tipo) {
       try {
         const data = await getAvailableByType(tipo);
         this.servico = { ...data };
       } catch (error) {
+        this.mensagem = "Não existem senhas disponíveis";
+        this.$q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: "Erro ao carregar serviços disponíveis!"
+        });
         console.error(error);
+      } finally {
+        this.loading = false;
       }
     },
     async createNewNumber() {
@@ -203,6 +255,13 @@ export default {
         this.senhas = { ...numbers };
         this.loading = false;
       } catch (error) {
+        this.mensagem = "Houve um erro ao criar a senha";
+        this.$q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: "Erro ao criar senha!"
+        });
         console.error(error);
       }
     }

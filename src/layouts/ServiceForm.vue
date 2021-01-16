@@ -3,7 +3,7 @@
     <template v-if="loading">
       <q-inner-loading showing color="blue-grey-6" />
     </template>
-    <div v-else class="q-pa-md q-mt-sm col">
+    <div v-else class="q-pa-md q-mt-lg col">
       <q-card class="my-card">
         <q-card-section class="bg-blue-grey-6 text-white">
           <div class="text-h6">
@@ -16,6 +16,7 @@
         <q-card-section>
           <q-form class="q-gutter-md">
             <q-select
+              :dense="$q.screen.lt.md"
               filled
               v-model="servico.tipo_servico"
               :options="options"
@@ -31,6 +32,7 @@
 
             <q-input
               filled
+              :dense="$q.screen.lt.md"
               v-model="servico.data"
               color="blue-grey-10"
               mask="##/##/####"
@@ -70,6 +72,7 @@
 
             <q-input
               filled
+              :dense="$q.screen.lt.md"
               v-model="servico.horario"
               mask="time"
               color="blue-grey-10"
@@ -103,6 +106,7 @@
             </q-input>
 
             <q-input
+              :dense="$q.screen.lt.md"
               v-model.number="servico.irmaos"
               type="number"
               label="Lugares disponíveis para Irmãos"
@@ -122,6 +126,7 @@
               </template>
             </q-input>
             <q-input
+              :dense="$q.screen.lt.md"
               color="blue-grey-10"
               v-model.number="servico.irmas"
               type="number"
@@ -142,6 +147,7 @@
             </q-input>
 
             <q-input
+              :dense="$q.screen.lt.md"
               v-model.number="servico.musicos"
               type="number"
               color="blue-grey-10"
@@ -162,6 +168,7 @@
             </q-input>
 
             <q-input
+              :dense="$q.screen.lt.md"
               v-model.number="servico.outros"
               type="number"
               color="blue-grey-10"
@@ -183,21 +190,24 @@
 
             <div class="q-mt-lg">
               <q-btn
+                :dense="$q.screen.lt.md"
                 v-if="id"
                 label="Salvar"
                 @click="saveEdition"
-                color="blue-grey-8"
+                color="blue-grey-10"
               />
               <q-btn
                 v-else
+                :dense="$q.screen.lt.md"
                 label="Criar"
                 @click="createNew"
-                color="blue-grey-8"
+                color="blue-grey-10"
               />
               <q-btn
                 label="Cancelar"
+                :dense="$q.screen.lt.md"
                 @click="$router.go(-1)"
-                color="blue-grey-8"
+                color="blue-grey-10"
                 flat
                 class="q-ml-sm"
               />
