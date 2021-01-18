@@ -41,9 +41,15 @@
       </q-card>
     </div>
     <div class="q-px-md q-gutter-md">
-      <q-btn label="Salvar" @click="saveNumber" color="blue-grey-10" />
+      <q-btn
+        label="Salvar"
+        v-if="salvar"
+        @click="saveNumber"
+        color="blue-grey-10"
+      />
       <q-btn
         label="Voltar"
+        v-if="voltar"
         @click="$router.push({ name: 'index' })"
         color="blue-grey-10"
       />
@@ -55,7 +61,20 @@ import html2canvas from "html2canvas";
 
 export default {
   name: "Number",
-  props: ["senhas"],
+  props: {
+    senhas: {
+      type: Object,
+      default: {}
+    },
+    salvar: {
+      type: Boolean,
+      default: true
+    },
+    voltar: {
+      type: Boolean,
+      default: true
+    }
+  },
   methods: {
     saveNumber() {
       html2canvas(this.$refs.content, { useCORS: true }).then(canvas => {

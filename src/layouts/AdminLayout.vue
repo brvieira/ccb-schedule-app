@@ -128,7 +128,6 @@ export default {
         const data = await getDataByType(tipo);
         this.rows = [...data];
         this.loading = false;
-        console.log(data);
       } catch (error) {
         console.error(error);
       }
@@ -136,7 +135,6 @@ export default {
   },
   mounted() {
     this.getData(this.tipo);
-    console.log(this.tipo);
   }
 };
 </script>

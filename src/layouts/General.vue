@@ -9,7 +9,14 @@
           <div class="text-h5 text-weight-bold">
             {{ mensagem }}
           </div>
-          <div class="text-h6">Tente novamente mais tarde</div>
+          <div class="text-h6">{{ sub_mensagem }}</div>
+          <q-btn
+            :dense="$q.screen.lt.md"
+            label="Voltar ao início"
+            @click="$router.go(-1)"
+            color="blue-grey-8"
+            class="q-ml-sm"
+          />
         </q-card-section>
       </q-card>
     </div>
@@ -191,6 +198,7 @@ export default {
   data() {
     return {
       mensagem: null,
+      sub_mensagem: null,
       loading: true,
       quantidade_irmaos: null,
       quantidade_irmas: null,
@@ -226,9 +234,14 @@ export default {
     async getAvailableService(tipo) {
       try {
         const data = await getAvailableByType(tipo);
-        this.servico = { ...data };
+        if (Object.keys(data).length > 0) this.servico = { ...data };
+        else {
+          this.mensagem = "Não existem senhas disponíveis";
+          this.sub_mensagem = "Tente novamente mais tarde";
+        }
       } catch (error) {
         this.mensagem = "Não existem senhas disponíveis";
+        this.sub_mensagem = "Tente novamente mais tarde";
         this.$q.notify({
           color: "red-5",
           textColor: "white",
@@ -243,19 +256,26 @@ export default {
     async createNewNumber() {
       this.loading = true;
       try {
-        const body = {
-          culto_id: this.servico._id,
-          irmaos: this.quantidade_irmaos,
-          irmas: this.quantidade_irmas,
-          data: this.servico.data,
-          horario: this.servico.horario
-        };
+        if (this.quantidade_irmaos > 0 || this.quantidade_irmas > 0) {
+          const body = {
+            culto_id: this.servico._id,
+            irmaos: this.quantidade_irmaos,
+            irmas: this.quantidade_irmas,
+            data: this.servico.data,
+            horario: this.servico.horario
+          };
 
-        const numbers = await createNumberToService(body);
-        this.senhas = { ...numbers };
+          const numbers = await createNumberToService(body);
+          this.senhas = { ...numbers };
+        } else {
+          this.mensagem =
+            "A quantidade de irmãos ou irmãs deve ser maior que 0";
+        }
+
         this.loading = false;
       } catch (error) {
         this.mensagem = "Houve um erro ao criar a senha";
+        this.sub_mensagem = "Tente novamente mais tarde";
         this.$q.notify({
           color: "red-5",
           textColor: "white",

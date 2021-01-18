@@ -10,8 +10,12 @@ function deleteNumberToService(number) {
   return axios.deleteUrl(`${url}/number/${number}`);
 }
 
-function editData(body) {
-  return axios.putUrl(`${url}`, body);
+function getNumbers(number) {
+  return axios.callUrl(`${url}/number/${number}`);
 }
 
-export { createNumberToService, deleteNumberToService };
+function editData(body) {
+  return axios.postUrl(`${url}/number/deleteAndCreateNew`, body);
+}
+
+export { createNumberToService, deleteNumberToService, getNumbers, editData };

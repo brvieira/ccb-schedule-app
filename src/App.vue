@@ -1,11 +1,15 @@
 <template id="q-app">
   <q-layout view="hhh lpR lfr" class="bg-grey-4">
-    <q-header elevated class="bg-blue-grey-8 text-white" height-hint="98">
+    <q-header
+      v-if="showNav"
+      elevated
+      class="bg-blue-grey-8 text-white"
+      height-hint="98"
+    >
       <q-toolbar>
-        <q-toolbar-title>
-          Congregação Cristã no Brasil
-        </q-toolbar-title>
-        <q-space class="touch-hide" />
+        <q-btn flat stretch label="Congregação Cristã no Brasil" to="/" />
+
+        <!-- <q-space class="touch-hide" />
         <q-btn
           class="touch-hide"
           stretch
@@ -13,11 +17,11 @@
           @click="openMap"
           label="Parque Industrial - Campinas/SP"
           icon="room"
-        />
+        /> -->
       </q-toolbar>
 
       <q-tabs
-        v-if="showNav"
+        v-if="showTabs"
         align="center"
         class="bg-blue-grey-10 text-white"
         no-caps
@@ -55,8 +59,11 @@ export default {
     }
   },
   computed: {
-    showNav() {
+    showTabs() {
       return this.$route.path.includes("admin");
+    },
+    showNav() {
+      return !this.$route.path.includes("login");
     }
   }
 };

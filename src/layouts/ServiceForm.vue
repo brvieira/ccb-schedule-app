@@ -52,7 +52,6 @@
                   >
                     <q-date
                       v-model="servico.data"
-                      :options="optionsFn"
                       mask="DD/MM/YYYY"
                       color="blue-grey-8"
                     >

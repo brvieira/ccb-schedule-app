@@ -7,7 +7,7 @@
       <q-card class="my-card">
         <q-card-section class="bg-blue-grey-6 text-white">
           <div class="text-h6">
-            {{ devolver ? "Devolver Senha" : "Editar Senha" }}
+            Devolver Senha
           </div>
         </q-card-section>
 
@@ -65,7 +65,6 @@ import { deleteNumberToService } from "../data/lane";
 
 export default {
   name: "ReturnNumber",
-  props: ["devolver"],
   data() {
     return {
       senha: null,
