@@ -9,15 +9,15 @@
       <q-toolbar>
         <q-btn flat stretch label="Congregação Cristã no Brasil" to="/" />
 
-        <!-- <q-space class="touch-hide" />
+        <q-space class="touch-hide" />
         <q-btn
-          class="touch-hide"
+          v-if="showTabs"
           stretch
           flat
-          @click="openMap"
-          label="Parque Industrial - Campinas/SP"
-          icon="room"
-        /> -->
+          @click="logout"
+          label="Sair"
+          icon="exit_to_app"
+        />
       </q-toolbar>
 
       <q-tabs
@@ -56,6 +56,10 @@ export default {
     },
     goTo(name) {
       return { name };
+    },
+    logout() {
+      localStorage.removeItem("usuario");
+      this.$router.push({ name: "index" });
     }
   },
   computed: {
@@ -64,6 +68,9 @@ export default {
     },
     showNav() {
       return !this.$route.path.includes("login");
+    },
+    isUserLogged() {
+      return localStorage.getItem("usuario") != null;
     }
   }
 };

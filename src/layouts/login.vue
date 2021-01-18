@@ -9,7 +9,7 @@
 
       <q-separator />
       <q-card-section>
-        <q-form class="q-gutter-md q-pa-md">
+        <q-form class="q-gutter-md q-pa-md" @submit="doLogin" @reset="onCancel">
           <q-input
             v-model="login.userid"
             type="text"
@@ -53,11 +53,11 @@
           </q-input>
 
           <div class="q-mt-lg">
-            <q-btn label="Entrar" @click="doLogin" color="blue-grey-10" />
+            <q-btn label="Entrar" type="submit" color="blue-grey-10" />
 
             <q-btn
               label="Cancelar"
-              @click="$router.go(-1)"
+              type="reset"
               color="blue-grey-10"
               flat
               class="q-ml-sm"
@@ -84,6 +84,9 @@ export default {
     doLogin() {
       localStorage.setItem("usuario", JSON.stringify("teste"));
       this.$router.push({ name: "admin" });
+    },
+    onCancel() {
+      this.$router.push({ name: "index" });
     }
   }
 };
