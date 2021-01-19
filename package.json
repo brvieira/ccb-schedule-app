@@ -7,8 +7,7 @@
   "private": true,
   "scripts": {
     "test": "echo \"No test specified\" && exit 0",
-    "start": "node app",
-    "postinstall": "quasar build"
+    "start": "node app"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
