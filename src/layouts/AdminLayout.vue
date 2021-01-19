@@ -49,7 +49,6 @@ export default {
           label: "Data",
           field: "data",
           align: "left",
-          sortable: true,
           classes: "bg-grey-4 ellipsis",
           headerClasses: "bg-blue-grey-8 text-white"
         },
@@ -57,6 +56,14 @@ export default {
           name: "horario",
           label: "Horário",
           field: "horario",
+          align: "center",
+          sortable: false,
+          headerClasses: "bg-blue-grey-8 text-white"
+        },
+        {
+          name: "dia_da_semana",
+          label: "Dia da Semana",
+          field: "dia_da_semana",
           align: "center",
           sortable: false,
           headerClasses: "bg-blue-grey-8 text-white"

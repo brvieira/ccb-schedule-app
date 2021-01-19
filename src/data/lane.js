@@ -22,10 +22,15 @@ function getNumbersByServiceAndType(id, type) {
   return axios.callUrl(`${url}/service/${id}/${type}`);
 }
 
+function updateNumbers(body) {
+  return axios.putUrl(`${url}/number`, body);
+}
+
 export {
   createNumberToService,
   deleteNumberToService,
   getNumbers,
   editData,
-  getNumbersByServiceAndType
+  getNumbersByServiceAndType,
+  updateNumbers
 };

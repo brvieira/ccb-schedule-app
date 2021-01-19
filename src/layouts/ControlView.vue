@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container q-mt-lg q-pa-md">
     <template v-if="loading">
       <q-inner-loading showing color="blue-grey-6" />
     </template>
@@ -19,8 +19,8 @@
           </div>
           <q-btn
             color="blue-grey-10"
-            @click="$router.push({ name: 'index' })"
-            label="Sair"
+            @click="$router.go()"
+            label="Voltar"
             class="full-width q-mt-xl"
           />
         </div>
@@ -67,66 +67,136 @@
     </q-card>
 
     <div v-else class="row justify-center">
-      <div class="q-pa-md q-px-sm-xl q-px-xs q-mt-lg col-12">
-        <q-table
-          :data="senhas"
-          :columns="columns"
-          :title="'Lista de Presença'"
-          row-key="_id"
-          :pagination="pagination"
-          selection="multiple"
-          :selected.sync="selected"
-          :loading="loading"
-          :filter="filter"
-        >
-          <template v-slot:loading>
-            <q-inner-loading showing color="blue-grey-8" />
-          </template>
-          <template v-slot:top-right>
-            <q-input
-              debounce="300"
-              v-model="filter"
-              placeholder="Pesquisar"
-              color="blue-grey-10"
-            >
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </template>
-        </q-table>
-        <q-btn
-          color="blue-grey-10"
-          :disable="loading"
-          label="Confirmar presença"
-          @click="addRow"
-          class="q-mt-md"
+      <q-tabs
+        v-model="tab"
+        align="center"
+        class="text-blue-grey-10 col-12"
+        no-caps
+        outside-arrows
+        mobile-arrows
+      >
+        <q-tab
+          name="not-confirmed"
+          :label="
+            tipo == 'irmao'
+              ? 'IRMÃOS QUE NÃO CHEGARAM'
+              : 'IRMÃS QUE NÃO CHEGARAM'
+          "
         />
-        <q-space />
-      </div>
+        <q-tab
+          name="confirmed"
+          :label="
+            tipo == 'irmao' ? 'IRMÃOS QUE JÁ CHEGARAM' : 'IRMÃS QUE JÁ CHEGARAM'
+          "
+        />
+      </q-tabs>
+
+      <q-separator />
+
+      <q-tab-panels
+        v-model="tab"
+        class="col-12 no-background q-px-sm-xl q-px-xs"
+      >
+        <q-tab-panel name="not-confirmed">
+          <q-table
+            :data="notConfirmed"
+            :columns="columns"
+            :title="'Lista de Presença'"
+            row-key="_id"
+            :pagination="pagination"
+            selection="multiple"
+            :selected.sync="selected_not_confirmed"
+            :loading="loading"
+            :filter="filter_not_confirmed"
+          >
+            <template v-slot:loading>
+              <q-inner-loading showing color="blue-grey-8" />
+            </template>
+            <template v-slot:top-right>
+              <q-input
+                debounce="300"
+                v-model="filter_not_confirmed"
+                placeholder="Pesquisar pela senha"
+                color="blue-grey-10"
+              >
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
+          </q-table>
+          <q-btn
+            color="blue-grey-10"
+            :disable="loading"
+            label="Confirmar presença"
+            @click="updateNumbers(true)"
+            class="q-mt-md"
+          />
+        </q-tab-panel>
+
+        <q-tab-panel name="confirmed">
+          <q-table
+            :data="confirmed"
+            :columns="columns"
+            :title="'Lista de Presença'"
+            row-key="_id"
+            :pagination="pagination"
+            selection="multiple"
+            :selected.sync="selected_confirmed"
+            :loading="loading"
+            :filter="filter_confirmed"
+          >
+            <template v-slot:loading>
+              <q-inner-loading showing color="blue-grey-8" />
+            </template>
+            <template v-slot:top-right>
+              <q-input
+                debounce="300"
+                v-model="filter_confirmed"
+                placeholder="Pesquisar pela senha"
+                color="blue-grey-10"
+              >
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
+          </q-table>
+          <q-btn
+            color="blue-grey-10"
+            :disable="loading"
+            label="Desconfirmar presença"
+            @click="updateNumbers(false)"
+            class="q-mt-md"
+          />
+        </q-tab-panel>
+      </q-tab-panels>
     </div>
   </div>
 </template>
 <script>
 import { getNextByType } from "../data/services";
-import { getNumbersByServiceAndType } from "../data/lane";
+import { getNumbersByServiceAndType, updateNumbers } from "../data/lane";
 export default {
   name: "ControlView",
   props: ["tipo"],
   data() {
     return {
+      tab: "not-confirmed",
       pagination: {
         sortBy: "desc",
         descending: false,
         rowsPerPage: 10
       },
-      filter: "",
+      filter_not_confirmed: "",
+      filter_confirmed: "",
       servicos: [],
       servico: null,
       loading: false,
       message: null,
       senhas: null,
-      selected: [],
+      selected_not_confirmed: [],
+      selected_confirmed: [],
       columns: [
         {
           name: "senha",
@@ -154,6 +224,12 @@ export default {
   computed: {
     serviceDates() {
       return this.servicos.map(s => s.data);
+    },
+    notConfirmed() {
+      return this.senhas.filter(s => !s.status);
+    },
+    confirmed() {
+      return this.senhas.filter(s => s.status);
     }
   },
   methods: {
@@ -186,6 +262,32 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+
+    async updateNumbers(status) {
+      try {
+        this.loading = true;
+        const selected = status
+          ? this.selected_not_confirmed
+          : this.selected_confirmed;
+        const ids = selected.map(s => s._id);
+
+        const body = {
+          ids,
+          field: "status",
+          value: status
+        };
+
+        const data = await updateNumbers(body);
+        await this.getServiceLane(this.servico._id, this.tipo);
+      } catch (error) {
+      } finally {
+        this.selected_not_confirmed = [];
+        this.selected_confirmed = [];
+        this.filter_not_confirmed = "";
+        this.filter_confirmed = "";
+        this.loading = false;
+      }
     }
   },
   mounted() {
@@ -198,4 +300,7 @@ export default {
   max-width: 450px
   width: 100%
   margin: auto
+
+.no-background
+  background-color: transparent
 </style>

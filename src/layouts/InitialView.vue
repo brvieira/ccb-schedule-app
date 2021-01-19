@@ -9,20 +9,20 @@
 
         <q-card-actions align="center" class="q-pa-lg" vertical>
           <q-btn
-            label="Retire sua Senha"
+            label="Retirar Senha"
             @click="$router.push({ name: 'senha' })"
             color="blue-grey-8"
             class="full-width"
           />
           <q-btn
-            label="Edite sua Senha"
+            label="Devolução parcial de Senha"
             @click="$router.push({ name: 'editar_senha' })"
             color="blue-grey-8"
             class="full-width"
             style="margin-top: 24px !important"
           />
           <q-btn
-            label="Devolva sua Senha"
+            label="Devolver Senha"
             @click="$router.push({ name: 'devolver_senha' })"
             color="blue-grey-8"
             class="full-width"

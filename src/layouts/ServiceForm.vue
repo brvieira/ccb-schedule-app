@@ -14,7 +14,7 @@
         <q-separator />
 
         <q-card-section>
-          <q-form class="q-gutter-md">
+          <q-form class="q-gutter-md" @submit="doSubmit">
             <q-select
               :dense="$q.screen.lt.md"
               filled
@@ -53,6 +53,7 @@
                     <q-date
                       v-model="servico.data"
                       mask="DD/MM/YYYY"
+                      :options="optionsFn"
                       color="blue-grey-8"
                     >
                       <div class="row items-center justify-end">
@@ -190,16 +191,8 @@
             <div class="q-mt-lg">
               <q-btn
                 :dense="$q.screen.lt.md"
-                v-if="id"
-                label="Salvar"
-                @click="saveEdition"
-                color="blue-grey-10"
-              />
-              <q-btn
-                v-else
-                :dense="$q.screen.lt.md"
-                label="Criar"
-                @click="createNew"
+                :label="id ? 'Salvar' : 'Criar'"
+                type="submit"
                 color="blue-grey-10"
               />
               <q-btn
@@ -239,20 +232,40 @@ export default {
         irmaos: null,
         irmas: null,
         musicos: null,
-        outros: null,
-        senhas_irmaos: [],
-        senhas_irmas: []
+        outros: null
       }
     };
   },
   methods: {
+    doSubmit() {
+      if (this.id) {
+        this.saveEdition();
+      } else {
+        this.createNew();
+      }
+    },
     optionsFn(date) {
-      const dayOfWeek = new Date(date).getDay();
+      return date >= this.getDate(new Date());
+    },
 
-      return (
-        date >= this.getDate(new Date()) &&
-        (dayOfWeek == 0 || dayOfWeek == 3 || dayOfWeek == 5)
-      );
+    getDayName(date) {
+      const splitedDate = date.split("/");
+      const dateStr = `${splitedDate[2]}/${splitedDate[1]}/${splitedDate[0]}`;
+      const dateObj = new Date(dateStr);
+
+      const dayNames = [
+        "Domingo",
+        "Segunda-feira",
+        "Terça-feira",
+        "Quarta-feira",
+        "Quinta-feira",
+        "Sexta-feira",
+        "Sábado"
+      ];
+
+      const dayOfWeek = dateObj.getDay();
+
+      return dayNames[dayOfWeek];
     },
     getDate(date) {
       const day = date.getDate(),
@@ -264,7 +277,14 @@ export default {
       return `${year}/${convMonth}/${convDat}`;
     },
     async createNew() {
-      const body = { ...this.servico };
+      const dateObj = this.convertDate(this.servico.data);
+      const tsDate = dateObj.getTime();
+
+      const body = {
+        ...this.servico,
+        data_timestamp: tsDate,
+        dia_da_semana: this.getDayName(this.servico.data)
+      };
 
       try {
         const response = await createNew(body);
@@ -285,11 +305,21 @@ export default {
         console.error(error);
       }
     },
+    convertDate(date) {
+      const splitedDate = date.split("/");
+      const dateStr = `${splitedDate[2]}/${splitedDate[1]}/${splitedDate[0]}`;
+      const dateObj = new Date(dateStr);
+      return dateObj;
+    },
     async saveEdition() {
-      let body = { ...this.servico };
+      const dateObj = this.convertDate(this.servico.data);
+      const tsDate = dateObj.getTime();
 
-      delete body.senhas_irmaos;
-      delete body.senhas_irmas;
+      let body = {
+        ...this.servico,
+        data_timestamp: tsDate,
+        dia_da_semana: this.getDayName(this.servico.data)
+      };
 
       try {
         const response = await editData(body);

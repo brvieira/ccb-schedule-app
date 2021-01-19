@@ -63,7 +63,7 @@
               ]"
             >
               <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer">
+                <q-icon name="today" class="cursor-pointer">
                   <q-popup-proxy
                     ref="qDateProxy"
                     transition-show="scale"
@@ -81,6 +81,25 @@
                     </q-date>
                   </q-popup-proxy>
                 </q-icon>
+              </template>
+            </q-input>
+
+            <q-input
+              :dense="$q.screen.lt.md"
+              filled
+              disable
+              v-model="servico.dia_da_semana"
+              label="Dia da Semana"
+              color="blue-grey-10"
+              lazy-rules
+              :rules="[
+                val =>
+                  (val !== null && val !== '') ||
+                  'Por favor, preencha o dia da semana'
+              ]"
+            >
+              <template v-slot:append>
+                <q-icon name="today" class="cursor-pointer"> </q-icon>
               </template>
             </q-input>
 
@@ -262,7 +281,8 @@ export default {
             irmaos: this.quantidade_irmaos,
             irmas: this.quantidade_irmas,
             data: this.servico.data,
-            horario: this.servico.horario
+            horario: this.servico.horario,
+            dia_da_semana: this.servico.dia_da_semana
           };
 
           const numbers = await createNumberToService(body);

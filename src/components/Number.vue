@@ -26,6 +26,11 @@
 
         <q-card-section class="last-section">
           <q-card-actions align="around">
+            <div class="text-h6  text-center text-weight-bolder">
+              {{ senhas.dia_da_semana }}
+            </div>
+          </q-card-actions>
+          <q-card-actions align="around">
             <div class="text-body1 text-center">Data: {{ senhas.data }}</div>
             <div class="text-body1 text-center">
               Horário: {{ senhas.horario }}

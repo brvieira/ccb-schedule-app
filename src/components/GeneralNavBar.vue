@@ -22,7 +22,7 @@ export default {
   methods: {
     logout() {
       localStorage.removeItem("usuario");
-      this.$router.push("/");
+      this.$router.go();
     }
   }
 };
