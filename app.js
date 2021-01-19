@@ -1,15 +1,12 @@
 const express = require("express");
 const path = require("path");
 const app = express();
-const cors = require("cors");
 
 const configs = {
   caminho: "dist/spa", //Aqui será definido a pasta de saída onde contém o index.html e os outros arquivos.
   forcarHTTPS: true, //Defina para true se desejar que o redirecionamento para HTTPS seja forçado (é necessário certificado SSL ativo)
   port: process.env.PORT || 8000
 };
-
-app.use(cors());
 
 if (configs.forcarHTTPS)
   //Se o redirecionamento HTTP estiver habilitado, registra o middleware abaixo
