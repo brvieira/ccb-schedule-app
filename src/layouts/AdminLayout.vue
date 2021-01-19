@@ -12,7 +12,7 @@
           @row-click="onRowClick"
         >
           <template v-slot:loading>
-            <q-inner-loading showing color="primary" />
+            <q-inner-loading showing color="blue-grey-8" />
           </template>
         </q-table>
       </div>

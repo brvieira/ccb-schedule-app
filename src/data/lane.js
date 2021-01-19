@@ -18,4 +18,14 @@ function editData(body) {
   return axios.postUrl(`${url}/number/deleteAndCreateNew`, body);
 }
 
-export { createNumberToService, deleteNumberToService, getNumbers, editData };
+function getNumbersByServiceAndType(id, type) {
+  return axios.callUrl(`${url}/service/${id}/${type}`);
+}
+
+export {
+  createNumberToService,
+  deleteNumberToService,
+  getNumbers,
+  editData,
+  getNumbersByServiceAndType
+};

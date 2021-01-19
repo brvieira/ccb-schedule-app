@@ -18,6 +18,10 @@ function getAvailableByType(type) {
   return axios.callUrl(`${url}/available/${type}`);
 }
 
+function getNextByType(type) {
+  return axios.callUrl(`${url}/next/${type}`);
+}
+
 function createNew(body) {
   return axios.postUrl(`${url}`, body);
 }
@@ -32,5 +36,6 @@ export {
   createNew,
   editData,
   getDataByType,
-  getAvailableByType
+  getAvailableByType,
+  getNextByType
 };

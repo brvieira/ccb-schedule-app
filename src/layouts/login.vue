@@ -1,6 +1,10 @@
 <template>
   <div class="absolute-center q-px-sm">
-    <q-card class="my-card q-mx-sm">
+    <template v-if="loading">
+      <q-inner-loading showing color="blue-grey-6" />
+    </template>
+
+    <q-card v-else class="my-card q-mx-sm">
       <q-card-section class="bg-blue-grey-6 text-white">
         <div class="text-h6">
           Fazer Login
@@ -8,10 +12,23 @@
       </q-card-section>
 
       <q-separator />
-      <q-card-section>
+      <q-card-section v-if="message">
+        <div class="my-section q-pa-md">
+          <div class="text-h5 text-weight-bold text-center">
+            {{ message }}
+          </div>
+          <q-btn
+            color="blue-grey-10"
+            @click="$router.go()"
+            label="Tentar novamente"
+            class="full-width q-mt-xl"
+          />
+        </div>
+      </q-card-section>
+      <q-card-section v-else>
         <q-form class="q-gutter-md q-pa-md" @submit="doLogin" @reset="onCancel">
           <q-input
-            v-model="login.userid"
+            v-model="login.username"
             type="text"
             filled
             color="blue-grey-10"
@@ -29,7 +46,7 @@
           </q-input>
 
           <q-input
-            v-model="login.senha"
+            v-model="login.password"
             filled
             :type="isPwd ? 'password' : 'text'"
             color="blue-grey-10"
@@ -69,25 +86,56 @@
   </div>
 </template>
 <script>
+import { login } from "../data/auth";
 export default {
   name: "login",
   data() {
     return {
       login: {
-        userid: null,
-        senha: null
+        username: null,
+        password: null
       },
-      isPwd: true
+      loading: false,
+      message: null,
+      isPwd: true,
+      returnUrl: null
     };
   },
   methods: {
-    doLogin() {
-      localStorage.setItem("usuario", JSON.stringify("teste"));
-      this.$router.push({ name: "admin" });
+    async doLogin() {
+      try {
+        this.loading = true;
+
+        const body = { ...this.login };
+        const data = await login(body);
+
+        if (data.status) {
+          localStorage.setItem("usuario", JSON.stringify(data.usuario));
+          this.$router.push(this.returnUrl);
+        } else {
+          this.message = data.message;
+        }
+      } catch (error) {
+        this.message = "Erro ao logar no sistema";
+        console.error(error);
+      } finally {
+        this.loading = false;
+      }
     },
     onCancel() {
-      this.$router.push({ name: "index" });
+      this.$router.push("/");
     }
+  },
+  created() {
+    if (
+      localStorage.getItem("usuario") &&
+      localStorage.getItem("usuario") != ""
+    ) {
+      this.$router.push("/");
+    }
+
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.$route.query.returnUrl || "/";
   }
 };
 </script>

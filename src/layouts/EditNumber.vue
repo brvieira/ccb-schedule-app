@@ -17,7 +17,10 @@
           active-icon="confirmation_number"
           :done="step > 1"
         >
-          <div v-if="error && error_msg" class="my-section">
+          <template v-if="loading">
+            <q-inner-loading showing color="blue-grey-6" />
+          </template>
+          <div v-else-if="error && error_msg" class="my-section">
             <div class="text-h5 text-weight-bold text-center">
               {{ error_msg }}
             </div>
@@ -86,7 +89,10 @@
           active-icon="people_alt"
           :done="step > 3"
         >
-          <div class="my-section">
+          <template v-if="loading">
+            <q-inner-loading showing color="blue-grey-6" />
+          </template>
+          <div v-else class="my-section">
             <q-select
               :dense="$q.screen.lt.md"
               v-model="quantidade_irmas"
@@ -130,7 +136,7 @@
               label="Próximo"
             />
             <q-btn
-              v-if="error || step === 4"
+              v-if="error || step === 4 || step === 1"
               color="blue-grey-10"
               @click="$router.push({ name: 'index' })"
               label="Voltar ao Início"
@@ -183,6 +189,7 @@ export default {
     },
     async getNumbersData() {
       try {
+        this.loading = true;
         const senha = this.senha;
         const data = await getNumbers(senha);
 
@@ -208,6 +215,8 @@ export default {
           message: "Erro procurar detalhes sobre a senha informada!"
         });
         console.error(error);
+      } finally {
+        this.loading = false;
       }
     },
     getOptions(max) {
@@ -222,6 +231,7 @@ export default {
     },
     async editNumberData() {
       try {
+        this.loading = true;
         const self = this;
         const newIrmaos = this.quantidade_irmaos;
         const newIrmas = this.quantidade_irmas;
@@ -261,6 +271,8 @@ export default {
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        this.loading = false;
       }
     }
   }

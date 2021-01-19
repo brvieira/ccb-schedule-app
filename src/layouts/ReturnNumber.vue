@@ -14,7 +14,7 @@
         <q-separator />
 
         <q-card-section>
-          <q-form class="q-gutter-md">
+          <q-form class="q-gutter-md q-pa-sm">
             <q-input
               filled
               :dense="$q.screen.lt.md"
@@ -83,7 +83,7 @@ export default {
           icon: "cloud_done",
           message: "Senha devolvida com sucesso!"
         });
-        this.$router.push({ name: "index" });
+        this.$router.push("/");
       } catch (error) {
         this.$q.notify({
           color: "red-5",
