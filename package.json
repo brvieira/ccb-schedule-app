@@ -14,9 +14,11 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "html2canvas": "^1.0.0-rc.7",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "request-promise": "^4.2.6"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
