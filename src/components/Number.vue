@@ -33,6 +33,13 @@
               {{ senhas.dia_da_semana }}
             </div>
           </q-card-actions>
+          <q-card-section>
+            <div class="text-negative text-body2 text-center text-weight-bold">
+              Caso não for possível ir ao culto no dia agendado, por favor fazer
+              a devolução da senha, até às 18:00 (às quartas e sextas feiras) e
+              até às 17:00 aos domingos, assim, outros poderão ocupar o lugar.
+            </div>
+          </q-card-section>
           <q-card-actions align="around">
             <div class="text-body1 text-center">Data: {{ senhas.data }}</div>
             <div class="text-body1 text-center">
