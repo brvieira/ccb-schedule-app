@@ -156,7 +156,7 @@
                 <q-icon name="people_alt" />
               </template>
               <template v-slot:hint>
-                Senhas disponíveis:
+                Lugares disponíveis:
                 {{ availBrothers - quantidade_irmaos }}
               </template>
             </q-select>
@@ -178,7 +178,7 @@
                 <q-icon name="people_alt" />
               </template>
               <template v-slot:hint>
-                Senhas disponíveis:
+                Lugares disponíveis:
                 {{ availSisters - quantidade_irmas }}
               </template>
             </q-select>

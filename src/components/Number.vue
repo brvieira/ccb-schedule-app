@@ -26,7 +26,10 @@
 
         <q-card-section class="last-section">
           <q-card-actions align="around">
-            <div class="text-h6  text-center text-weight-bolder">
+            <div
+              class="text-h4  text-center text-weight-bolder"
+              style="text-decoration: underline"
+            >
               {{ senhas.dia_da_semana }}
             </div>
           </q-card-actions>
@@ -45,7 +48,7 @@
         </q-card-section>
       </q-card>
     </div>
-    <div class="q-px-md q-gutter-md">
+    <div class="q-px-md q-gutter-md q-mb-lg">
       <q-btn
         label="Salvar"
         v-if="salvar"
@@ -87,6 +90,12 @@ export default {
         a.href = canvas.toDataURL();
         a.download = `senha-${this.senhas.data.replaceAll("/", "-")}.png`;
         a.click();
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Senha salva com sucesso!"
+        });
       });
     }
   }

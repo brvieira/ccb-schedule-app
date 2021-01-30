@@ -100,6 +100,14 @@ const routes = [
         meta: {
           authorize: ["admin"]
         }
+      },
+      {
+        path: "mensagem",
+        name: "mensagem",
+        component: () => import("layouts/MsgView.vue"),
+        meta: {
+          authorize: ["admin"]
+        }
       }
     ]
   },

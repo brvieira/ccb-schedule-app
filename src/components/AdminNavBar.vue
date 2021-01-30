@@ -14,6 +14,7 @@
       outside-arrows
       mobile-arrows
     >
+      <q-route-tab :to="goTo('mensagem')" label="Aviso" />
       <q-route-tab :to="goTo('cultos')" label="Cultos Oficiais" />
       <q-route-tab
         :to="goTo('reunioes')"
