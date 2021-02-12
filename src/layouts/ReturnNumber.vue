@@ -7,7 +7,7 @@
       <q-card class="my-card">
         <q-card-section class="bg-blue-grey-6 text-white">
           <div class="text-h6">
-            Devolver Senha
+            Cancelar Senha
           </div>
         </q-card-section>
 
@@ -26,7 +26,7 @@
               :rules="[
                 val =>
                   (val !== null && val !== '') ||
-                  'Por favor, informe a senha que deseja devolver',
+                  'Por favor, informe a senha que deseja cancelar',
                 val =>
                   val > 0 ||
                   'Por favor, informe corretamente a senha, a mesma deve ser maior que 0'
@@ -41,12 +41,12 @@
             <div class="q-mt-md">
               <q-btn
                 :dense="$q.screen.lt.md"
-                label="Devolver"
+                label="Confirmar Cancelamento"
                 @click="returnNumber"
                 color="blue-grey-10"
               />
               <q-btn
-                label="Cancelar"
+                label="Voltar"
                 :dense="$q.screen.lt.md"
                 @click="$router.push({ name: 'index' })"
                 color="blue-grey-10"
@@ -81,7 +81,7 @@ export default {
           color: "green-4",
           textColor: "white",
           icon: "cloud_done",
-          message: "Senha devolvida com sucesso!"
+          message: "Senha cancelada com sucesso!"
         });
         this.$router.push("/");
       } catch (error) {
@@ -89,7 +89,7 @@ export default {
           color: "red-5",
           textColor: "white",
           icon: "warning",
-          message: "Erro ao devolver senha! Tente novamente mais tarde!"
+          message: "Erro ao cancelar senha! Tente novamente mais tarde!"
         });
         console.error(error);
       } finally {

@@ -277,7 +277,7 @@ export default {
       return `${year}/${convMonth}/${convDat}`;
     },
     async createNew() {
-      const dateObj = this.convertDate(this.servico.data);
+      const dateObj = this.convertDate(this.servico.data, this.servico.horario);
       const tsDate = dateObj.getTime();
 
       const body = {
@@ -305,14 +305,20 @@ export default {
         console.error(error);
       }
     },
-    convertDate(date) {
+    convertDate(date, time) {
       const splitedDate = date.split("/");
       const dateStr = `${splitedDate[2]}/${splitedDate[1]}/${splitedDate[0]}`;
-      const dateObj = new Date(dateStr);
+      const splitedTime = time.split(":");
+
+      let dateObj = new Date(dateStr);
+
+      if (splitedTime.length > 0)
+        dateObj.setHours(splitedTime[0], splitedTime[1]);
+
       return dateObj;
     },
     async saveEdition() {
-      const dateObj = this.convertDate(this.servico.data);
+      const dateObj = this.convertDate(this.servico.data, this.servico.horario);
       const tsDate = dateObj.getTime();
 
       let body = {
