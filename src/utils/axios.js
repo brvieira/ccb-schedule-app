@@ -51,4 +51,16 @@ function deleteUrl(url, data) {
   });
 }
 
-export default { callUrl, postUrl, putUrl, deleteUrl };
+function callAnyUrl(url) {
+  return new Promise(function(resolve, reject) {
+    axios
+      .get(url)
+      .then(({ data }) => resolve(data))
+      .catch(error => {
+        console.error(error);
+        reject(error);
+      });
+  });
+}
+
+export default { callUrl, postUrl, putUrl, deleteUrl, callAnyUrl };

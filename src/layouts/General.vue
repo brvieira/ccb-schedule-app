@@ -209,6 +209,8 @@
 <script>
 import { getAvailableByType } from "../data/services";
 import { createNumberToService } from "../data/lane";
+import { getUserIp } from "../data/auth";
+
 import Number from "../components/Number";
 export default {
   name: "General",
@@ -216,6 +218,7 @@ export default {
   components: { Number },
   data() {
     return {
+      ip: null,
       mensagem: null,
       sub_mensagem: null,
       loading: true,
@@ -282,7 +285,8 @@ export default {
             irmas: this.quantidade_irmas,
             data: this.servico.data,
             horario: this.servico.horario,
-            dia_da_semana: this.servico.dia_da_semana
+            dia_da_semana: this.servico.dia_da_semana,
+            ip: this.ip
           };
 
           const numbers = await createNumberToService(body);
@@ -304,9 +308,19 @@ export default {
         });
         console.error(error);
       }
+    },
+    async getCurrentUserIp() {
+      try {
+        const ipData = await getUserIp();
+        const ip = ipData.geoplugin_request;
+        this.ip = ip;
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
   mounted() {
+    this.getCurrentUserIp();
     this.getAvailableService(this.tipo);
   }
 };

@@ -10,4 +10,8 @@ function createUser(body) {
   return axios.postUrl(`${url}/newUser`, body);
 }
 
-export { login, createUser };
+function getUserIp() {
+  return axios.callAnyUrl("http://www.geoplugin.net/json.gp");
+}
+
+export { login, createUser, getUserIp };
