@@ -1,7 +1,8 @@
 "use strict";
 
 const axios = require("axios");
-const backendUrl = process.env.BACKEND;
+const backendUrl =
+  process.env.BACKEND || "https://ccb-schedules-api.herokuapp.com";
 
 function callUrl(url) {
   return new Promise(function(resolve, reject) {
