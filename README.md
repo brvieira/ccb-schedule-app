@@ -1,6 +1,6 @@
 # Quasar App (ccb-schedule-app)
 
-A Quasar Framework app
+A Quasar Framework app developed to help the Christian Congregation to distribute numbers to their members to join in the services.
 
 ## Install the dependencies
 ```bash
