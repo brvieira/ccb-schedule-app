@@ -13,7 +13,8 @@
           <q-card-section v-html="text" class="bg-orange-2" />
         </q-card>
       </div>
-      <q-card class="my-card q-pa-lg">
+
+      <!-- <q-card class="my-card q-pa-lg">
         <q-card-section class="text-blue-grey-10 text-center">
           <div class="text-h4 text-weight-bold">Distribuição de Senhas</div>
           <div class="text-h6">Cultos Oficiais</div>
@@ -26,13 +27,13 @@
             color="blue-grey-8"
             class="full-width"
           />
-          <!-- <q-btn
+          <q-btn
             label="Devolução parcial de Senha"
             @click="$router.push({ name: 'editar_senha' })"
             color="blue-grey-8"
             class="full-width"
             style="margin-top: 24px !important"
-          /> -->
+          />
           <q-btn
             label="Cancelar Senha"
             @click="$router.push({ name: 'devolver_senha' })"
@@ -41,7 +42,7 @@
             style="margin-top: 24px !important"
           />
         </q-card-actions>
-      </q-card>
+      </q-card> -->
     </div>
   </div>
 </template>
