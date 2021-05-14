@@ -24,11 +24,11 @@ const routes = [
         name: "devolver_senha",
         component: () => import("layouts/ReturnNumber.vue")
       },
-      /*       {
+      {
         path: "senha/editar",
         name: "editar_senha",
         component: () => import("layouts/EditNumber.vue")
-      }, */
+      },
       {
         path: "porteiro/:tipo",
         name: "porteiro",
